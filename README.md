@@ -1,7 +1,7 @@
 # WECEtechmusiclights
 
 How to get started developing:
-1. Clone the repository
+1. Clone the repository  
   a. install git if you dont have it already  
     use terminal command: sudo apt install git  
   b. configure git for your account  
