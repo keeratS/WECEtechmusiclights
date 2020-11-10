@@ -7,6 +7,7 @@ How to get started developing:
   b. configure git for your account  
     git config --global user.name <insert your username here>  
     git config --global user.email <insert your email here>  
+    git config --global user.password <password>
   c. clone repo (try https first)  
     navigate to the folder you want to work in   
     use terminal command: git clone <insert URL here>  
