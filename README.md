@@ -13,4 +13,4 @@ How to get started developing:
     use terminal command: git clone <insert URL here>  
 2. Navigate to your desired branch which is based on what you're working on
 3. Program
-    
+4. when you want to add stuff, use the flow git add, git commit (with message), then git push
