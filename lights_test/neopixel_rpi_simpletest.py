@@ -51,18 +51,23 @@ def rainbow_cycle(wait):
         pixels.show()
         time.sleep(wait)
 
+print("Press Ctrl-C to turn off lights")
+try: 
+    while True:
+        pixels.fill((255, 0, 0))
+        pixels.show()
+        time.sleep(1)
 
-while True:
-    pixels.fill((255, 0, 0))
+        pixels.fill((0, 255, 0))
+        pixels.show()
+        time.sleep(1)
+
+        pixels.fill((0, 0, 255))
+        pixels.show()
+        time.sleep(1)
+        
+        rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
+except KeyboardInterrupt:
+    # shutting off lights
+    pixels.fill((0, 0, 0))
     pixels.show()
-    time.sleep(1)
-
-    pixels.fill((0, 255, 0))
-    pixels.show()
-    time.sleep(1)
-
-    pixels.fill((0, 0, 255))
-    pixels.show()
-    time.sleep(1)
-
-    rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
