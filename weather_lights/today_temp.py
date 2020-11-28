@@ -11,48 +11,52 @@ def grb(r,g,b):
 
 # weather is a WeatherLights object
 def today_temp_lights(weather, pixels):
-    today_temp = weather.get_today_temp() #today_temp = weather.get_today_temp(), tbh idk what's happening right here
-    #create an array w/ temp color
-        #each array w/ color code, and then calling them in the for loop for the color
-    
-#         colorList = [[255, 255, 255], [0, 0, 255], [0, 255, 0], [255, 255, 0], [255, 0, 0]] white, blue, green, yellow, red
-
-#for i in colorList:
- #   red = i[0] (111)
-  #  green = i[1] (222)
-   # blue = i[2] (254)
+     #today_temp = weather.get_today_temp(), tbh idk what's happening right here
+    #all the values need to be scaled for the range, couldn't I just do a for loop to decrease red by a specific amount?
     try:
         #need a pixel statement with this as well
         while True:
             #need if statements firs, then go through each for loop
-            if today_temp in range (0, 21): #white, and then goes to halfway blue
-                #for loop to then add the darkness of blue, each value back 6.375
-                halfway= today_temp % 10 #modulus isn't going to work, if it's 10 F, it'll just show up as white
-                    #what if I did division instead?? /10, if the result was greater than 1, it would already be halfway down, and then
-                    #decrease red again with the modulus
+            if weather in range (0, 21): #white, and then goes to halfway blue
+                red=255#for loop to then add the darkness of blue, each value back 12.75
+                for x in range (weather):
+                    red= red-12
                 
-                for x in depth: #need to decrease R, can decrease 6.375 by the modulus
-                    
-                    blue= blue
-                    
-                    #lights=grb(
-                    #calling the array, adding the value of blue
+                
+             pixels.fill((red, 255, 255))
+             pixels.show()
                 
             if today_temp in range (21, 41): #blue to halfway green
-                
-               #pixels[i] = color
-                #pixels[i-1] = (0, 0, 0)
+                blue=255
+                 for x in range (weather):
+                    blue= blue-12 #the lowest B value will be 0, giving us total green
+             pixels.fill((0, 255, blue))
+             pixels.show()
+                 
+             
             if today_temp in range (41, 61):# green to halfway yellow
+                red=255
+                 for x in range (weather):
+                    red= red-12 #changing red gives us yellow with b=0
+             pixels.fill((red, 255, 0))
+             pixels.show()
             
             if today_temp in range (61, 81):#yellow, halfway red (orange should be the result)
-                
+                green=255
+                 for x in range (weather)
+                    #halfway to red in order to get orange
+                     green= 255-6
+             pixels.fill((255, green, 0))
+             pixels.show()
             
             if today_temp in range (81, 101): #orange to red
-                
-            
-            
-                
-                pixels.show()
+                green= 127
+                 for today_temp in range (21):
+                    green=green-12 #the lowest B value will be 0, giving us total green
+             pixels.fill((red, green, 0))
+             pixels.show() 
+
+               
                 #could implement some sort of effect here.
     except KeyboardInterrupt:
         # shutting off lights
