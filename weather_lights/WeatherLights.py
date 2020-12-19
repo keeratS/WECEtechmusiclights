@@ -43,7 +43,15 @@ class WeatherLights:
         
         # get just int value and turn to num
         wind_speed = wind_speed.replace(' mph', '')
-        wind_speed = float(wind_speed)
+        # if contains range, get avg
+        ran = wind_speed.find(" to ")
+        if(ran != -1):
+            a = float(wind_speed[0:ran])
+            b = float(wind_speed[5:])
+            wind_speed = (a+b) / 2
+        else:
+            wind_speed = float(wind_speed)
         
+        print(wind_speed)
         return wind_speed
         
