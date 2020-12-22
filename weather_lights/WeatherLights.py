@@ -52,6 +52,5 @@ class WeatherLights:
         else:
             wind_speed = float(wind_speed)
         
-        print(wind_speed)
         return wind_speed
         
