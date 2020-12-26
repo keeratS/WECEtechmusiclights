@@ -53,4 +53,15 @@ class WeatherLights:
             wind_speed = float(wind_speed)
         
         return wind_speed
+    
+    def get_short_forecast(self):
+        #Short Forecast
+        sforecast = requests.get(self.url)
+        sforecast = sforecast.json()
+        sforecast = sforecast['properties']['periods']
+        period = sforecast[0]
+        sforecast = period['shortForecast']
+        sforecast = str(sforecast)
+        return sforecast 
+
         

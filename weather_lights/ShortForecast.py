@@ -6,13 +6,13 @@ import board
 import neopixel
 import random
 
-from Class_Weather_Lights import Class_Weather_Lights
+from WeatherLights import WeatherLights
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # NeoPixels must be connected to D10, D12, D18 or D21 to work.
 lat = 38.9072
 long = -77.0369
 
-w = Class_Weather_Lights(lat, long)
+w = WeatherLights(lat, long)
 
 pixel_pin = board.D18
 
