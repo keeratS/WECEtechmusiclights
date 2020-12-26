@@ -1,0 +1,95 @@
+Language model created by QuickLM on Fri Dec  4 01:35:56 EST 2020
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 10 sentences and 20 words
+
+\data\
+ngram 1=20
+ngram 2=30
+ngram 3=22
+
+\1-grams:
+-0.9243 </s> -0.3010
+-0.9243 <s> -0.2401
+-1.9243 FIRE -0.2460
+-1.9243 GALAXY -0.2852
+-1.6232 IS -0.2852
+-1.6232 IT -0.2906
+-1.4472 LIGHTS -0.2460
+-1.9243 LIKE -0.2460
+-1.9243 RAIN -0.2958
+-1.9243 RAINBOW -0.2852
+-1.9243 SNOW -0.2460
+-1.9243 STAR -0.2852
+-1.9243 TEMPERATURE -0.2460
+-1.9243 THE -0.2958
+-1.9243 TODAY -0.2460
+-1.9243 WEATHER -0.2958
+-1.9243 WHAT -0.2906
+-1.9243 WHAT'S -0.2460
+-1.9243 WILL -0.2906
+-1.9243 WINDY -0.2460
+
+\2-grams:
+-1.3010 <s> FIRE 0.0000
+-1.3010 <s> GALAXY 0.0000
+-1.3010 <s> IS -0.1761
+-1.3010 <s> RAINBOW 0.0000
+-1.3010 <s> SNOW 0.0000
+-1.3010 <s> STAR 0.0000
+-1.3010 <s> TEMPERATURE 0.0000
+-1.3010 <s> WHAT 0.0000
+-1.3010 <s> WHAT'S 0.0000
+-1.3010 <s> WILL 0.0000
+-0.3010 FIRE </s> -0.3010
+-0.3010 GALAXY LIGHTS 0.0000
+-0.6021 IS IT -0.1761
+-0.6021 IS THE 0.0000
+-0.6021 IT RAIN 0.0000
+-0.6021 IT WINDY 0.0000
+-0.3010 LIGHTS </s> -0.3010
+-0.3010 LIKE </s> -0.3010
+-0.3010 RAIN TODAY 0.0000
+-0.3010 RAINBOW LIGHTS 0.0000
+-0.3010 SNOW </s> -0.3010
+-0.3010 STAR LIGHTS 0.0000
+-0.3010 TEMPERATURE </s> -0.3010
+-0.3010 THE WEATHER 0.0000
+-0.3010 TODAY </s> -0.3010
+-0.3010 WEATHER LIKE 0.0000
+-0.3010 WHAT IS -0.1761
+-0.3010 WHAT'S </s> -0.3010
+-0.3010 WILL IT -0.1761
+-0.3010 WINDY </s> -0.3010
+
+\3-grams:
+-0.3010 <s> FIRE </s>
+-0.3010 <s> GALAXY LIGHTS
+-0.3010 <s> IS IT
+-0.3010 <s> RAINBOW LIGHTS
+-0.3010 <s> SNOW </s>
+-0.3010 <s> STAR LIGHTS
+-0.3010 <s> TEMPERATURE </s>
+-0.3010 <s> WHAT IS
+-0.3010 <s> WHAT'S </s>
+-0.3010 <s> WILL IT
+-0.3010 GALAXY LIGHTS </s>
+-0.3010 IS IT WINDY
+-0.3010 IS THE WEATHER
+-0.3010 IT RAIN TODAY
+-0.3010 IT WINDY </s>
+-0.3010 RAIN TODAY </s>
+-0.3010 RAINBOW LIGHTS </s>
+-0.3010 STAR LIGHTS </s>
+-0.3010 THE WEATHER LIKE
+-0.3010 WEATHER LIKE </s>
+-0.3010 WHAT IS THE
+-0.3010 WILL IT RAIN
+
+\end\
