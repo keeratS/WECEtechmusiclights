@@ -26,7 +26,7 @@ def today_temp_lights(weather, pixels):
              pixels.fill((red, 255, 255))
              pixels.show()
                 
-            if today_temp in range (21, 41): #blue to halfway green
+            if weather in range (21, 41): #blue to halfway green
                 blue=255
                  for x in range (weather):
                     blue= blue-12 #the lowest B value will be 0, giving us total green
@@ -34,14 +34,14 @@ def today_temp_lights(weather, pixels):
              pixels.show()
                  
              
-            if today_temp in range (41, 61):# green to halfway yellow
+            if weather in range (41, 61):# green to halfway yellow
                 red=255
                  for x in range (weather):
                     red= red-12 #changing red gives us yellow with b=0
              pixels.fill((red, 255, 0))
              pixels.show()
             
-            if today_temp in range (61, 81):#yellow, halfway red (orange should be the result)
+            if weather in range (61, 81):#yellow, halfway red (orange should be the result)
                 green=255
                  for x in range (weather)
                     #halfway to red in order to get orange
@@ -49,7 +49,7 @@ def today_temp_lights(weather, pixels):
              pixels.fill((255, green, 0))
              pixels.show()
             
-            if today_temp in range (81, 101): #orange to red
+            if weather in range (81, 101): #orange to red
                 green= 127
                  for today_temp in range (21):
                     green=green-12 #the lowest B value will be 0, giving us total green
