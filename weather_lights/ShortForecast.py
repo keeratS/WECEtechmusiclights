@@ -67,6 +67,16 @@ def cloudy():
         pixels[j] = (0,0,0)
         pixels.show()
         time.sleep(0.07)
+
+def fog():
+    for i in range (50):
+        pixels[i] = (75,75,75)
+        pixels.show()
+        time.sleep(0.07)
+    for j in range (50):
+        pixels[j] = (0,0,0)
+        pixels.show()
+        time.sleep(0.07)
 def snow():
     for i in range (50):
         pixels[i] = (0,0,0)
@@ -90,38 +100,42 @@ def rain():
             time.sleep(0.07)
             
     
-def sunny(wait):
+def sunny():
     for i in range (50):
         pixels[i] = (150,200,0)
         pixels.show()
-        time.sleep(wait)
+        time.sleep(0.05)
     for j in range (50):
         pixels[j] = (0,0,0)
         pixels.show()
-        time.sleep(wait)
+        time.sleep(0.05)
         
-def sunny_w_clouds(wait):
-    for i in range (50):
-        pixels[i] = (150,200,0)
-        pixels.show()
-        time.sleep(wait)
-    for k in range (5):
-        pixels[k] = (250,250,250)
-        pixels.show()
-        time.sleep(wait)
-
+def sunny_w_clouds():
     for m in range (50):
-        pixels[m] = (0,0,0)
+        pixels[m] = (150,250,0)
+    pixels.show()
+    for i in range (50):
+        pixels[i] = (250,250,250)
         pixels.show()
-        time.sleep(wait)
+        time.sleep(0.07)
+    for j in range (50):
+        pixels[j] = (150,250,0)
+        pixels.show()
+        time.sleep(0.07)
+        
 def short_forecast(weather, pixels):
     short_forecast = weather.get_short_forecast()
     sunnyF = short_forecast.find('Sunny')
-    sunny_w_cloudsF = short_forecast.find
     cloudyF = short_forecast.find('Cloudy')
     rainF = short_forecast.find('Rain')
     snowF = short_forecast.find('Snow')
     fogF = short_forecast.find('Fog')
+    
+    if (cloudyF != -1):
+        if (sunnyF != -1):
+            sunny_w_cloudsF = 1
+    else:
+        sunny_w_cloudsF = -1
     
     
     
@@ -129,16 +143,19 @@ def short_forecast(weather, pixels):
     print("Press Ctrl-C to turn off lights")
     try: 
         while True:
-            if sunnyF != -1:
-                sunny(0.05)
+            if sunny_w_cloudsF != -1:
+                sunny_w_clouds()
+            elif sunnyF != -1:
+                sunny()
+            elif rainF != -1:
+                rain()
             elif snowF != -1:
                 snow()
             elif cloudyF != -1:
                 cloudy()
-            elif rainF != -1:
-                rain()
-            elif sunny_w_cloudsF != -1:
-                sunny_w_clouds(0.05)
+            elif fogF != -1:
+                fog()
+            
             else:
                 rainbow_cycle(0.05)
 
