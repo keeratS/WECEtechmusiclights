@@ -1,6 +1,7 @@
-# From https://github.com/adafruit/Adafruit_CircuitPython_NeoPixel/blob/master/examples/neopixel_rpi_simpletest.py
+#Essentially this code displays the current weather
+#It utalizes the short forecast to determine what the weather is (snow, cloudy, runny, etc)
+#then it runs the designated function for each type of weather reporting.
 
-# Simple test for NeoPixels on Raspberry Pi
 import time
 import board
 import neopixel
@@ -25,9 +26,6 @@ ORDER = neopixel.GRB
 pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
 )
-
-
-
 def wheel(pos):
     # Input a value 0 to 255 to get a color value.
     # The colours are a transition r - g - b - back to r.
@@ -50,13 +48,17 @@ def wheel(pos):
     return (r, g, b) if ORDER in (neopixel.RGB, neopixel.GRB) else (r, g, b, 0)
 
 
-def rainbow_cycle(wait):
+def rainbow_cycle():
     for j in range(255):
         for i in range(num_pixels):
             pixel_index = (i * 256 // num_pixels) + j
             pixels[i] = wheel(pixel_index & 255)
-        pixels.show()
-        time.sleep(wait)
+            pixels.show()
+            time.sleep(0.05)
+        for j in range (50):
+            pixels[j] = (0,0,0)
+            pixels.show()
+            time.sleep(0.05)
 
 def cloudy():
     for i in range (50):
@@ -77,6 +79,7 @@ def fog():
         pixels[j] = (0,0,0)
         pixels.show()
         time.sleep(0.07)
+        
 def snow():
     for i in range (50):
         pixels[i] = (0,0,0)
@@ -98,7 +101,6 @@ def rain():
             pixels[m] = (100,50,255)
             pixels.show()
             time.sleep(0.07)
-            
     
 def sunny():
     for i in range (50):
@@ -124,6 +126,7 @@ def sunny_w_clouds():
         time.sleep(0.07)
         
 def short_forecast(weather, pixels):
+    #search for key words in the short forecast to determine what the current weather is.
     short_forecast = weather.get_short_forecast()
     sunnyF = short_forecast.find('Sunny')
     cloudyF = short_forecast.find('Cloudy')
@@ -143,9 +146,11 @@ def short_forecast(weather, pixels):
     print("Press Ctrl-C to turn off lights")
     try: 
         while True:
+            #If the key words are recognized the .find will output not -1, if it didnt find the key word outputs -1.
+            #Based of this, we can run each function using an if else statement prioritizing certain functions.
             if sunny_w_cloudsF != -1:
                 sunny_w_clouds()
-            elif sunnyF != -1:
+            elif sunnyF == -1:
                 sunny()
             elif rainF != -1:
                 rain()
@@ -155,15 +160,9 @@ def short_forecast(weather, pixels):
                 cloudy()
             elif fogF != -1:
                 fog()
-            
+            #if no key words were detected, then display the rainbow_cycle
             else:
-                rainbow_cycle(0.05)
-
-                
-                
-        #cloudy(0.05) #white
-        #cloudy_w_rain(0.05)
-        
+                rainbow_cycle()
         
     except KeyboardInterrupt:
     # shutting off lights
