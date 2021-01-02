@@ -135,9 +135,9 @@ def short_forecast(weather, pixels):
                 snow()
             elif cloudyF != -1:
                 cloudy()
-            elif rainF == -1:
+            elif rainF != -1:
                 rain()
-            elif sunny_w_cloudsF == -1:
+            elif sunny_w_cloudsF != -1:
                 sunny_w_clouds(0.05)
             else:
                 rainbow_cycle(0.05)
