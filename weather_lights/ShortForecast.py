@@ -62,46 +62,33 @@ def cloudy():
     for i in range (50):
         pixels[i] = (250,250,250)
         pixels.show()
-        time.sleep(0.025)
+        time.sleep(0.07)
     for j in range (50):
         pixels[j] = (0,0,0)
         pixels.show()
-        time.sleep(0.025)
+        time.sleep(0.07)
 def snow():
     for i in range (50):
-        pixels[i] = (255,255,255)
-        pixels.show()
-        time.sleep(0.075)
+        pixels[i] = (0,0,0)
+    pixels.show()
     for j in range (50):
-        pixels[j] = (0,0,0)
-        pixels.show()
-        time.sleep(0.025)
-        
-def rain(wait):
-    for k in range (50):
-        pixels[k] = (0,0,0)
-        pixels.show
-    for j in range (50):
-        if (j % 3 != 0):
-            pixels[j] = (250,250,250)
         if (j % 3 == 0):
-            pixels[j] = (100,50,255)
-        pixels.show()
-        time.sleep(wait)
-  #  for k in range (50):
-       # pixels[k] = (0,0,0)
-      #  pixels.show()
-   # for i in range (50):
-       # if (i%3 != 0):
-         #   pixels[i] = (250,250,250)
-       # if (i % 3 == 0):
-          #  pixels[i] = (220,54,255)
-       # pixels.show()
-       # time.sleep(wait)
-    #for j in range (50):
-        #pixels[j] = (0,0,0)
-       # pixels.show()
-       # time.sleep(wait)
+            pixels[j] = (255,255,255)
+            pixels.show()
+            time.sleep(0.35)
+            pixels[j] = (0,0,0)
+            time.sleep(0.2)
+        
+def rain():
+    for i in range (50):
+        pixels[i] = (250,250,250)
+    pixels.show()
+    for m in range (50):
+        if (m % 3 == 0):
+            pixels[m] = (100,50,255)
+            pixels.show()
+            time.sleep(0.07)
+            
     
 def sunny(wait):
     for i in range (50):
@@ -134,6 +121,7 @@ def short_forecast(weather, pixels):
     cloudyF = short_forecast.find('Cloudy')
     rainF = short_forecast.find('Rain')
     snowF = short_forecast.find('Snow')
+    fogF = short_forecast.find('Fog')
     
     
     
@@ -143,16 +131,17 @@ def short_forecast(weather, pixels):
         while True:
             if sunnyF != -1:
                 sunny(0.05)
-            if snowF != -1:
+            elif snowF != -1:
                 snow()
             elif cloudyF != -1:
                 cloudy()
-            elif rainF != -1:
-                rain(0.05)
-            elif sunny_w_cloudsF != -1:
+            elif rainF == -1:
+                rain()
+            elif sunny_w_cloudsF == -1:
                 sunny_w_clouds(0.05)
             else:
                 rainbow_cycle(0.05)
+
                 
                 
         #cloudy(0.05) #white
