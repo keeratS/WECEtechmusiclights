@@ -1,11 +1,16 @@
+# implementation of windspeed function.
+# the wind_speed_lights function generates a visual lights representation
+# of the current wind speed based on 
 import board
 import neopixel
 import time
 
-# local imports 
-from WeatherLights import WeatherLights # importing defined class
-
-
+# local imports
+# is there a better way to do this?
+try:
+    from weather_lights.WeatherLights import WeatherLights
+except:
+    from WeatherLights import WeatherLights
 
 # weather is a WeatherLights object
 def wind_speed_lights(weather, pixels):
@@ -44,28 +49,29 @@ def wind_speed_lights(weather, pixels):
         pixels.fill((0, 0, 0))
         pixels.show()
     
-    
+
+# if this script is being run on its own this will be run
+# if this file is imported as a module elsewhere, it will not
+if __name__ == "__main__":
+    # creating WeatherLights object with pre-defined latitude and longitude
+    lat = 38.9072
+    long = -77.0369
+
+    w = WeatherLights(lat, long)
 
 
-# creating WeatherLights object with pre-defined latitude and longitude
-lat = 38.9072
-long = -77.0369
+    # defining information about our lights.
+    # This part will eventually be done centrally instead of redefined in every file
+    pixel_pin = board.D18
+    num_pixels = 50
 
-w = WeatherLights(lat, long)
-
-
-# defining information about our lights.
-# This part will eventually be done centrally instead of redefined in every file
-pixel_pin = board.D18
-num_pixels = 50
-
-# allows us to use RGB ordering
-ORDER = neopixel.RGB
-pixels = neopixel.NeoPixel(
-    pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
-)
+    # allows us to use RGB ordering
+    ORDER = neopixel.RGB
+    pixels = neopixel.NeoPixel(
+        pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
+    )
 
 
-wind_speed_lights(w, pixels)
+    wind_speed_lights(w, pixels)
 
 
