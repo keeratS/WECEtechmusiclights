@@ -37,12 +37,8 @@ pixels.fill((0, 0, 0))
 pixels.show()
 
 
-# creating WeatherLights object with pre-defined latitude and longitude
-# TODO init location
-lat = 38.9072
-long = -77.0369
-w = WeatherLights(lat, long)
-
+# creating WeatherLights object 
+w = WeatherLights()
 
 # listens for one command and calls parser accordingly
 # TODO add to loop for continuous listening, including background listenting for stop

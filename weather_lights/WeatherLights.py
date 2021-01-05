@@ -2,9 +2,19 @@
 # We can expand this code as we begin writing more weather code.
 
 # Should be already installed. If not:
-# pip3 install requests (in terminal
+# pip3 install requests (in terminal)
 import requests
 
+# returns coordinates from ip address as (lat, long)
+def get_lat_long():
+    url = "http://ipinfo.io/json"
+    response = requests.get(url)
+    data = response.json()
+    
+    coord = data["loc"]
+    coord = coord.split(",")
+    return coord[0], coord[1]
+    
 # organizing in a class certainly isn't the only way to do this
 # (or even necessarily the best way) but we can workshop it.
 
@@ -12,20 +22,27 @@ class WeatherLights:
     # constructor
     # self represents the instance of the class so we can access
     # the attributes and methods of the WeatherLights class.
-    # You create the object like w = WeatherLights(latitude, longitude)
-    def __init__(self, latitude, longitude):
+    # You create the object like WeatherLights(latitude, longitude)
+    # or WeatherLights() to get location from ip
+    def __init__(self, latitude = None, longitude = None):
+        if(latitude is None or longitude is None):
+            latitude, longitude = get_lat_long()
+        
         # By getting the grid here, we avoid having to make this call
         # everytime we want weather information.
         grid = requests.get("https://api.weather.gov/points/{},{}".format(latitude, longitude))
         grid = grid.json()
         properties = grid['properties']
         
-        # we initialize instance variables inside the constructor
-        self.url = properties['forecast']
+        self.grid_x = properties['gridX']
+        self.grid_y = properties['gridY']
         
-        # just for verification
-        self.city = properties['relativeLocation']['properties']['city']
-
+        # initializing instance variables
+        self.url = properties['forecast'] # basic forecast url
+        
+        self.latitude = latitude
+        self.longitude = longitude
+        
     # returns current/latest wind speed in mph
     def get_wind_speed(self):
         # we will make a new API request here to ensure we are getting the
@@ -64,4 +81,17 @@ class WeatherLights:
         sforecast = str(sforecast)
         return sforecast 
 
-        
+if __name__ == "__main__":
+    # tests
+    lat = 38.9072
+    long = -77.0369
+    weather1 = WeatherLights(lat, long)
+    print("Given coordinates", lat, long)
+    print(weather1.latitude, weather1.longitude)
+    
+    print()
+    weather2 = WeatherLights()
+    print("From ip address")
+    print(weather2.latitude, weather2.longitude)
+    
+    
