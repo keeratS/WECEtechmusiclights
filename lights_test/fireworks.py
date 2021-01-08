@@ -7,15 +7,6 @@ import neopixel
 
 import random
 
-pixel_pin=board.D18
-num_pixels=50
-ORDER=neopixel.RGB
-
-pixels=neopixel.NeoPixel(
-        pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
-)
-
-print ("initialized light setup")
 
 def dim (color, amount):
     #color should be a 3-tuple to represent color
@@ -23,7 +14,7 @@ def dim (color, amount):
     #print(result)
     return result
 
-def flash(num):
+def flash(pixels, num):
     # input cleanup
     if num>50:
         num=num%50
@@ -83,13 +74,23 @@ def flash(num):
     if(num<48):
         pixels[num+2]=(0,0,0)
 
-try:
-    print ("beginning lights effect")
-    while(1==1):
-        flash(random.random()*50)
-        time.sleep(0.2)
+def firework_lights(pixels):
+    try:
+        while(1==1):
+            flash(pixels, random.random()*50)
+            time.sleep(0.2)
 
-except KeyboardInterrupt:
-    #shutting off lights
-    pixels.fill((0,0,0))
-    pixels.show()
+    except KeyboardInterrupt:
+        #shutting off lights
+        pixels.fill((0,0,0))
+        pixels.show()
+
+if __name__ == "__main__":
+    pixel_pin=board.D18
+    num_pixels=50
+    ORDER=neopixel.RGB
+    pixels=neopixel.NeoPixel(
+        pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
+    )
+    
+    firework_lights(pixels)
