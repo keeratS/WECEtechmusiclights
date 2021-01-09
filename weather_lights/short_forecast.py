@@ -7,7 +7,10 @@ import board
 import neopixel
 import random
 
-from WeatherLights import WeatherLights
+try:
+    from weather_lights.WeatherLights import WeatherLights
+except:
+    from WeatherLights import WeatherLights
 # # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # # NeoPixels must be connected to D10, D12, D18 or D21 to work.
 # lat = 38.9072
@@ -134,11 +137,11 @@ def short_forecast(weather, pixels):
     snowF = short_forecast.find('Snow')
     fogF = short_forecast.find('Fog')
     
-    if (cloudyF != -1):
-        if (sunnyF != -1):
-            sunny_w_cloudsF = 1
-    else:
-        sunny_w_cloudsF = -1
+#     if (cloudyF != -1):
+#         if (sunnyF != -1):
+#             sunny_w_cloudsF = 1
+#     else:
+#         sunny_w_cloudsF = -1
         
         
         
@@ -148,9 +151,9 @@ def short_forecast(weather, pixels):
         while True:
             #If the key words are recognized the .find will output not -1, if it didnt find the key word outputs -1.
             #Based of this, we can run each function using an if else statement prioritizing certain functions.
-            if sunny_w_cloudsF != -1:
-                sunny_w_clouds()
-            elif sunnyF != -1:
+#             if sunny_w_cloudsF != -1:
+#                 sunny_w_clouds()
+            if sunnyF != -1:
                 sunny()
             elif rainF != -1:
                 rain()
