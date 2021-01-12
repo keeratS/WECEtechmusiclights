@@ -12,6 +12,7 @@ from weather_lights.short_forecast import short_forecast
 from lights_test.galaxy_effect import galaxy_lights
 from lights_test.rainbow_shift import rainbow_shift
 from lights_test.neopixel_rpi_simpletest import simple_lights_test
+from music_lights.pitch_react import pitch_react
 
 # returns elapsed seconds since start time
 def time_delta(start_time):
@@ -26,10 +27,10 @@ def time_delta(start_time):
 # target is name of function
 # args are the arguments to that function
 # t is the amount of time function should be run before terminating
-def run_func_sub(target, args, t, pixels, r):
+def run_func_sub(target, args, t, r):
         # start func as a process
         p = multiprocessing.Process(target = target, args = args)
-        p.start() # starting wind_speed_lights function, same as wind_speed_lights(w, pixels)
+        p.start() 
     
         def kill_process():
             if p.is_alive():
@@ -73,12 +74,19 @@ def run_func_sub(target, args, t, pixels, r):
         # in case of timeout
         kill_process()
         
-        # Shutting the lights off. this is usally taken care of in the except block of the
-        # functions, but we don't catch the SIGTERM. There is probably a cleaner way to do
-        # this. This will do for now.
-        # TODO figure out cleanup
-        pixels.fill((0, 0, 0))
-        pixels.show()
+
+        
+# run function on timer -- cannot be stopped with a stop command
+def run_on_timer(target, args, t):
+    # start func as a process
+    p = multiprocessing.Process(target = target, args = args)
+    p.start()
+    
+    # want to run function for t seconds
+    time.sleep(t)
+    p.terminate()
+    p.join()
+    
     
 # command is the string command
 # w is WeatherLights object
@@ -93,19 +101,38 @@ def parse_intent(command, pixels, w, recognizer):
     #not reformatted yet
     #if("temperature" in command):
         #run_func_sub(today_temp, (w, pixels), 5, pixels)
-    if("weather" in command):
-        run_func_sub(short_forecast, (w, pixels), 5, pixels, recognizer)
+    elif("weather" in command):
+        run_func_sub(short_forecast, (w, pixels), 5, recognizer)
         
-    if("fireworks" in command):
-        run_func_sub(firework_lights, (pixels,), 5, pixels, recognizer)
-    if("galaxy" in command):
-        run_func_sub(galaxy_lights, (pixels,), 5, pixels, recognizer)
-    if("lights" in command):
-        run_func_sub(simple_lights_test, (pixels,), 5, pixels, recognizer)
-    if("rainbow" in command): #works
-        run_func_sub(rainbow_shift, (pixels,), 5, pixels, recognizer)
+    elif("fireworks" in command):
+        run_func_sub(firework_lights, (pixels,), 5, recognizer)
+    elif("galaxy" in command):
+        run_func_sub(galaxy_lights, (pixels,), 5, recognizer)
+    elif("lights" in command):
+        run_func_sub(simple_lights_test, (pixels,), 5, recognizer)
+    elif("rainbow" in command): 
+        run_func_sub(rainbow_shift, (pixels,), 5, recognizer)
     
+    # pitch reaction. Little different because cannot stop with stop command
+    elif("pitch" in command or "react" in command):
+        # default runs for 60 seconds otherwise based on user time request
+        time = 60
+        if("three" in command):
+            time = 3*60
+        elif("ten" in command):
+            time = 10*60
+        elif("five" in command):
+            time = 5*60
+
+        print("Running for", time, "seconds")
+        run_on_timer(pitch_react, (pixels,), time)
     
+    # Shutting the lights off. this is usally taken care of in the except block of the
+    # functions, but we don't catch the SIGTERM. There is probably a cleaner way to do
+    # this. This will do for now.
+    # TODO figure out cleanup
+    pixels.fill((0, 0, 0))
+    pixels.show()
+
     
-        
-    
+

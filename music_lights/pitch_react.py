@@ -1,6 +1,7 @@
 #! /usr/bin/env python
+# This script reacts to music/sound from the microphone based on pitch
 
-#this code is made of additions to the demo_pyaudio 
+# this code is made of additions to the demo_pyaudio 
 
 # Use pyaudio to open the microphone and run aubio.pitch on the stream of
 # incoming samples. If a filename is given as the first argument, it will
@@ -14,17 +15,12 @@
 import pyaudio
 import sys
 import numpy as np
-import aubio
+import aubio # sudo pip3 install aubio
 
 #neopixel setup
 import time
 import board
 import neopixel
-
-pixel_pin=board.D18
-num_pixels=50
-ORDER=neopixel.RGB
-pixels=neopixel.NeoPixel( pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER)
 
 #function to take colors of hsv format and convert it to rgb format
 def hsv_to_rgb(h, s, v):
@@ -39,90 +35,99 @@ def hsv_to_rgb(h, s, v):
         if i == 4: return (int(t), int(p), int(v))
         if i == 5: return (int(v), int(p), int(q))
 
-# initialise pyaudio
-p = pyaudio.PyAudio()
+def pitch_react(pixels):
+    # initialise pyaudio
+    p = pyaudio.PyAudio()
 
-# open stream
-buffer_size = 1024
-pyaudio_format = pyaudio.paFloat32
-n_channels = 1
-samplerate = 44100
-stream = p.open(format=pyaudio_format,
-                channels=n_channels,
-                rate=samplerate,
-                input=True,
-                frames_per_buffer=buffer_size)
+    # open stream
+    buffer_size = 1024
+    pyaudio_format = pyaudio.paFloat32
+    n_channels = 1
+    samplerate = 44100
+    stream = p.open(format=pyaudio_format,
+                    channels=n_channels,
+                    rate=samplerate,
+                    input=True,
+                    frames_per_buffer=buffer_size)
 
-if len(sys.argv) > 1:
-    # record 5 seconds
-    output_filename = sys.argv[1]
-    record_duration = 5 # exit 1
-    outputsink = aubio.sink(sys.argv[1], samplerate)
-    total_frames = 0
-else:
-    # run forever
-    outputsink = None
-    record_duration = None
+    if len(sys.argv) > 1:
+        # record 5 seconds
+        output_filename = sys.argv[1]
+        record_duration = 5 # exit 1
+        outputsink = aubio.sink(sys.argv[1], samplerate)
+        total_frames = 0
+    else:
+        # run forever
+        outputsink = None
+        record_duration = None
 
-# setup pitch
-tolerance = 0.8
-win_s = 4096 # fft size
-hop_s = buffer_size # hop size
-pitch_o = aubio.pitch("yinfast", win_s, hop_s, samplerate)
-pitch_o.set_unit("midi")
-pitch_o.set_tolerance(tolerance)
+    # setup pitch
+    tolerance = 0.8
+    win_s = 4096 # fft size
+    hop_s = buffer_size # hop size
+    pitch_o = aubio.pitch("yinfast", win_s, hop_s, samplerate)
+    pitch_o.set_unit("midi")
+    pitch_o.set_tolerance(tolerance)
 
-print("*** starting recording")
+    print("*** starting recording")
 
-rgb=(0,0,0)
+    rgb=(0,0,0)
 
-while True:
-    try:
-        audiobuffer = stream.read(buffer_size, exception_on_overflow=False)
-        signal = np.fromstring(audiobuffer, dtype=np.float32)
+    while True:
+        try:
+            audiobuffer = stream.read(buffer_size, exception_on_overflow=False)
+            signal = np.frombuffer(audiobuffer, dtype=np.float32)
 
-        pitch = pitch_o(signal)[0]
-        confidence = pitch_o.get_confidence()
+            pitch = pitch_o(signal)[0]
+            confidence = pitch_o.get_confidence()
+            
+            #commented out print statements can be useful for debugging
+            #print("{} / {}".format(pitch,confidence))
+            
+            hue=int(pitch*360/100) #based on the pitch from the mic a hue is chosen
         
-        #commented out print statements can be useful for debugging
-        #print("{} / {}".format(pitch,confidence))
-        
-        hue=int(pitch*360/100) #based on the pitch from the mic a hue is chosen
-    
-        if (pitch !=0): #if it didnt hear any noise don't update pitch
-            rgb= hsv_to_rgb(hue,1,1) #convert to rgb
-        else:
-            rgb=(0,0,0)
-            #print ("no confidence")
+            if (pitch !=0): #if it didnt hear any noise don't update pitch
+                rgb= hsv_to_rgb(hue,1,1) #convert to rgb
+            else:
+                rgb=(0,0,0)
+                #print ("no confidence")
 
-        #rgb= hsv_to_rgb(hue,1,1)
-        #print(rgb)
-       
-       #put the new color on left and cascade the rest
-        for i in range (49,0,-1):
-            pixels[i]=pixels[i-1]
-        pixels[0]=rgb
+            #rgb= hsv_to_rgb(hue,1,1)
+            #print(rgb)
+           
+           #put the new color on left and cascade the rest
+            for i in range (49,0,-1):
+                pixels[i]=pixels[i-1]
+            pixels[0]=rgb
 
-        #time.sleep(0.05)
-        pixels.show()
-        #print("updated the lights")
-        #print("___")
-        
-        #back to audio stuff now
-        if outputsink:
-            outputsink(signal, len(signal))
+            #time.sleep(0.05)
+            pixels.show()
+            #print("updated the lights")
+            #print("___")
+            
+            #back to audio stuff now
+            if outputsink:
+                outputsink(signal, len(signal))
 
-        if record_duration:
-            total_frames += len(signal)
-            if record_duration * samplerate < total_frames:
-                break
-    except KeyboardInterrupt:
-        print("*** Ctrl+C pressed, exiting")
-        pixels.fill((0,0,0))
-        pixels.show()
-        break
+            if record_duration:
+                total_frames += len(signal)
+                if record_duration * samplerate < total_frames:
+                    break
+        except KeyboardInterrupt:
+            print("*** Ctrl+C pressed, exiting")
+            pixels.fill((0,0,0))
+            pixels.show()
+            break
 
-print("*** done recording")
-stream.stop_stream()
-stream.close()
-p.terminate()
+    print("*** done recording")
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+
+if __name__ == "__main__":
+    pixel_pin=board.D18
+    num_pixels=50
+    ORDER=neopixel.RGB
+    pixels=neopixel.NeoPixel( pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER)
+
+    pitch_react(pixels)
