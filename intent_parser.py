@@ -5,14 +5,20 @@ import time
 import time
 import speech_recognition as sr
 import datetime
+import pathlib
 
 # local imports
 from weather_lights.wind_speed_lights import wind_speed_lights
 from weather_lights.short_forecast import short_forecast
 from lights_test.galaxy_effect import galaxy_lights
 from lights_test.rainbow_shift import rainbow_shift
+from lights_test.fire_flicker import fire_animation
+from lights_test.fireworks import firework_lights
 from lights_test.neopixel_rpi_simpletest import simple_lights_test
 from music_lights.pitch_react import pitch_react
+
+#variables for easy configuration
+dsec = 60 #how long (seconds) should a regular program run before stopping without a command
 
 # returns elapsed seconds since start time
 def time_delta(start_time):
@@ -40,9 +46,11 @@ def run_func_sub(target, args, t, r):
         # function for background listening for stop function
         # listens for "stop lights" to immediately terminate anything currently going on
         def callback(recognizer, audio):
-            language_path = "/home/pi/Documents/wece_lights/WECEtechmusiclights/en-WECE"
+            lang_path= pathlib.Path(__file__).parent.absolute().joinpath('en-WECE')
+            lang_path=str(lang_path)
+            #print(lang_path)
             try:  
-                command = r.recognize_sphinx(audio, language=language_path)
+                command = r.recognize_sphinx(audio, language=lang_path)
                 print("Sphinx thinks you said", command)
                 command = command.lower()
                 
@@ -97,21 +105,23 @@ def parse_intent(command, pixels, w, recognizer):
     # TODO actual implementation -- need to correctly map command to function
     # currently only example of how code would work
     if("wind speed" in command): #works
-        run_func_sub(wind_speed_lights, (w, pixels), 5, pixels, recognizer)
+        run_func_sub(wind_speed_lights, (w, pixels), dsec, recognizer)
     #not reformatted yet
     #if("temperature" in command):
         #run_func_sub(today_temp, (w, pixels), 5, pixels)
     elif("weather" in command):
-        run_func_sub(short_forecast, (w, pixels), 5, recognizer)
+        run_func_sub(short_forecast, (w, pixels), dsec, recognizer)
         
     elif("fireworks" in command):
-        run_func_sub(firework_lights, (pixels,), 5, recognizer)
+        run_func_sub(firework_lights, (pixels,), dsec, recognizer)
     elif("galaxy" in command):
-        run_func_sub(galaxy_lights, (pixels,), 5, recognizer)
+        run_func_sub(galaxy_lights, (pixels,), dsec, recognizer)
+    elif("fire" in command):
+        run_func_sub(fire_animation, (pixels,), dsec, recognizer)
     elif("lights" in command):
-        run_func_sub(simple_lights_test, (pixels,), 5, recognizer)
+        run_func_sub(simple_lights_test, (pixels,), dsec, recognizer)
     elif("rainbow" in command): 
-        run_func_sub(rainbow_shift, (pixels,), 5, recognizer)
+        run_func_sub(rainbow_shift, (pixels,), dsec, recognizer)
     
     # pitch reaction. Little different because cannot stop with stop command
     elif("pitch" in command or "react" in command):

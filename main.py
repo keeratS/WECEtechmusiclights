@@ -68,7 +68,7 @@ while True:
             audio = r.listen(source)
             
         language_path = os.path.join(os.getcwd(), "en-WECE")
-
+        print (language_path)
         # recognize speech using Sphinx  
         try:  
             command = r.recognize_sphinx(audio, language=language_path)
