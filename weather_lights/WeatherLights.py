@@ -36,12 +36,15 @@ class WeatherLights:
         
         self.grid_x = properties['gridX']
         self.grid_y = properties['gridY']
+        self.grid_id = properties['gridId']
         
         # initializing instance variables
         self.url = properties['forecast'] # basic forecast url
         
         self.latitude = latitude
         self.longitude = longitude
+        
+        self.properties = properties
         
     # returns current/latest wind speed in mph
     def get_wind_speed(self):
@@ -79,7 +82,21 @@ class WeatherLights:
         period = sforecast[0]
         sforecast = period['shortForecast']
         sforecast = str(sforecast)
-        return sforecast 
+        return sforecast
+    
+    # returns an array containing the temperatures for the next 24 hours
+    def get_24_hour_temp(self):
+        url = self.properties["forecastHourly"]
+        forecast = requests.get(url)
+        forecast = forecast.json()
+        periods = forecast['properties']['periods']
+        
+        temps = []
+        
+        for i in range(24):
+            temps.append(periods[i]["temperature"])
+            
+        return temps
 
 if __name__ == "__main__":
     # tests
@@ -93,5 +110,8 @@ if __name__ == "__main__":
     weather2 = WeatherLights()
     print("From ip address")
     print(weather2.latitude, weather2.longitude)
+    
+    print()
+    print(weather1.get_24_hour_temp())
     
     

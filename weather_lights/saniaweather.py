@@ -1,41 +1,29 @@
-import json
-import urllib.request
 import board
 import neopixel
 import time
 
+# local imports
+try:
+    from weather_lights.WeatherLights import WeatherLights
+except:
+    from WeatherLights import WeatherLights
+    
 
-
-ORDER=neopixel.RGB
-pixel_pin =board.D18
-n_leds = 50
-pixels = neopixel.NeoPixel(board.D18, n_leds, auto_write=False, pixel_order= ORDER)
-
-
-
-def gethourlytemps(wfo, gridX, gridY):
+def get_hourly_temps(w, pixels):
+    temps = w.get_24_hour_temp()
     
-    
-    #get the forecast info from the national weather service
-    forecast=urllib.request.urlopen('https://api.weather.gov/gridpoints/'+wfo+"/"+str(gridX)+","+str(gridY)+"/forecast/hourly").read()
-    #interpret that json
-    forecast=json.loads(forecast)
-    
-    temps=[] #list to store the temperatures we will ask for from the api so we can return a single item
-    #loop through the json and grab the 24 next hourly temperature forcasts
-    
-    
-    
-    
-    for i in range(24):
-        temps.append(forecast['properties']['periods'][i]['temperature'])
-        weather= temps[i]
-        try:
-        #need a pixel statement with this as well
+    try:
+        for i in range(24):
+            weather = temps[i]
+            print(weather)
+            
+            #need a pixel statement with this as well
             red=255
             green=255
             blue=255
             pixels.fill((red, green, blue))
+            pixels.show()
+            
             while True:
             #need if statements firs, then go through each for loop
                 if i in range (0, 21): #white, and then goes to halfway blue
@@ -43,10 +31,9 @@ def gethourlytemps(wfo, gridX, gridY):
                     if not (sub1 == 0):
                         for a in range (0, sub1):
                                 red=red-12
-                pixels.sleep(300)
+                time.sleep(300)
                 pixels.fill((red, 255, 255))
                 pixels.show()
-             
              
                     
                 if i in range (21, 41): #blue to halfway green
@@ -90,10 +77,21 @@ def gethourlytemps(wfo, gridX, gridY):
 
                
                 #could implement some sort of effect here.
-        except KeyboardInterrupt:
+    except KeyboardInterrupt:
         # shutting off lights
-                    pixels.fill((0, 0, 0))
-                    pixels.show()
+            pixels.fill((0, 0, 0))
+            pixels.show()
     
     #return the list
     return (temps)
+
+
+if __name__ == "__main__":
+    w = WeatherLights()
+    
+    ORDER=neopixel.RGB
+    pixel_pin =board.D18
+    n_leds = 50
+    pixels = neopixel.NeoPixel(board.D18, n_leds, auto_write=False, pixel_order= ORDER)
+    
+    get_hourly_temps(w, pixels)
