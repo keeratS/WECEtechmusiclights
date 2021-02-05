@@ -9,6 +9,7 @@ import pathlib
 
 # local imports
 from weather_lights.wind_speed_lights import wind_speed_lights
+from weather_lights.preciplites import precipitation
 from weather_lights.short_forecast import short_forecast
 from lights_test.galaxy_effect import galaxy_lights
 from lights_test.rainbow_shift import rainbow_shift
@@ -111,7 +112,8 @@ def parse_intent(command, pixels, w, recognizer):
         #run_func_sub(today_temp, (w, pixels), 5, pixels)
     elif("weather" in command):
         run_func_sub(short_forecast, (w, pixels), dsec, recognizer)
-        
+    elif(("rain" in command) or ("snow" in command)):
+        run_func_sub(precipitation, (w, pixels), dsec, recognizer)
     elif("fireworks" in command):
         run_func_sub(firework_lights, (pixels,), dsec, recognizer)
     elif("galaxy" in command):
