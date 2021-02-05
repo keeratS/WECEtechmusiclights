@@ -28,6 +28,7 @@ except:
 #     pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
 # )
 def precipitation(weather, pixels):
+    num_pixels=50
     def wheel(pos):
         # Input a value 0 to 255 to get a color value.
         # The colours are a transition r - g - b - back to r.
