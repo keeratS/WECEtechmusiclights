@@ -97,6 +97,16 @@ class WeatherLights:
             temps.append(periods[i]["temperature"])
             
         return temps
+    
+    def get_detailed_forecast(self):
+        #gets the more detailed forecast, which includes [among other things] chance of precipitation for the nearest period of forecasting
+        dfore = requests.get(self.url)
+        dfore = dfore.json()
+        dfore = dfore['properties']['periods']
+        period = dfore[0]
+        dfore = period['detailedForecast']
+        dfore = str(dfore)
+        return dfore
 
 if __name__ == "__main__":
     # tests

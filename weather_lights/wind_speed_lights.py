@@ -36,12 +36,12 @@ def wind_speed_lights(weather, pixels):
 
     try:
         while True:
-            # single led lit traveling at defined speed
+            # a few led lights traveling at defined speed
             for i in range(50):
                 pixels[i] = color
                 # can acess last pixels like pixels[-1]
                 # (this is true in general for lists), so this won't error
-                pixels[i-1] = (0, 0, 0)
+                pixels[i-5] = (0, 0, 0)
                 pixels.show()
                 time.sleep(t)
     except KeyboardInterrupt:
