@@ -24,6 +24,9 @@ If there is a combination of the above weather, it will do weather animations th
 *Wind Speed*  
 The wind_speed_lights function gets the current wind speed. The speed of the lights across directly correspond to the wind speed, assuming a two inch distance between adjacent LEDs.
 
+*Precipitation*
+Visualizes the probabilities of rain and snow by filling a proportional number of lights. 
+
 #### Music Lights    
 
 *Pitch Reaction*  
@@ -37,3 +40,8 @@ Makes the lights blue and shifts through slightly different colors, creating a t
 *Fireworks*  
 Lights up random sections of the lights in primary colors which slowly spread and fade, like fireworks.
 
+*Rainbow Shift*
+Creates traveling lights across the string in rainbow order. 
+
+*Fire Flicker*
+Produces subtly shifting fire-colored lights. 
