@@ -3,18 +3,20 @@
 import time
 import board
 import neopixel
+import numpy
 
 import random
 
 def gradient(pixels,shift):
   '''This function creates a gradient'''
   #colors to gradient in RGB
-  bcolor=(167,158,235) #bright color in RGB
-  ncolor=(216,222,255) #neutral color in RGB
+  bcolor=np.array(167,158,235) #bright color in RGB
+  ncolor=np.array(216,222,255) #neutral color in RGB
 
   #calculations
-  colorstep = tuple(map(lambda i, j: i - j, bcolor, ncolor)) #subtract tuples from each other
-  colorstep = colorstep/pixels.n
+  #colorstep = tuple(map(lambda i, j: i - j, bcolor, ncolor)) #subtract tuples from each other
+  colorstep= bcolor-ncolor
+  colorstep = colorstep/(pixels.n)
 
   for i in range(pixels):
       i=(i+shift)%pixels.n
