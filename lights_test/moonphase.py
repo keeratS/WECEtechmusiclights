@@ -19,7 +19,7 @@ def gradient(pixels,shift):
   colorstep = colorstep/(pixels.n)
 
   for i in range(pixels):
-      i=(i+shift)%pixels.n
+    i=(i+shift)%pixels.n
     pixels[i]=(bcolor[0]+colorstep[0]*i,bcolor[1]+colorstep[1]*i,bcolor[2]+colorstep[2]*i)
 
 
