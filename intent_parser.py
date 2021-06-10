@@ -16,6 +16,7 @@ from lights_test.rainbow_shift import rainbow_shift
 from lights_test.fire_flicker import fire_animation
 from lights_test.fireworks import firework_lights
 from lights_test.neopixel_rpi_simpletest import simple_lights_test
+from lights_test.moonphase import moonshine
 from music_lights.pitch_react import pitch_react
 
 #variables for easy configuration
@@ -124,6 +125,8 @@ def parse_intent(command, pixels, w, recognizer):
         run_func_sub(simple_lights_test, (pixels,), dsec, recognizer)
     elif("rainbow" in command): 
         run_func_sub(rainbow_shift, (pixels,), dsec, recognizer)
+    elif(("moon" in command) or ("phase" in command))
+        run_func_sub(moonshine, (pixels,), dsec, recognizer)
     
     # pitch reaction. Little different because cannot stop with stop command
     elif("pitch" in command or "react" in command):
