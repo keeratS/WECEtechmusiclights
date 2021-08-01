@@ -27,6 +27,9 @@ The wind_speed_lights function gets the current wind speed. The speed of the lig
 *Precipitation*
 Visualizes the probabilities of rain and snow by filling a proportional number of lights. 
 
+*Moon Phase*
+Represents the moon phase using a gradient purple color to show the percent of the moon that will be illuminated. At least one LED will be on regardless of phase.
+
 #### Music Lights    
 
 *Pitch Reaction*  
