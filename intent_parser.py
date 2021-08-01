@@ -125,7 +125,7 @@ def parse_intent(command, pixels, w, recognizer):
         run_func_sub(simple_lights_test, (pixels,), dsec, recognizer)
     elif("rainbow" in command): 
         run_func_sub(rainbow_shift, (pixels,), dsec, recognizer)
-    elif(("moon" in command) or ("phase" in command))
+    elif(("moon" in command) or ("phase" in command)):
         run_func_sub(moonshine, (pixels,), dsec, recognizer)
     
     # pitch reaction. Little different because cannot stop with stop command
